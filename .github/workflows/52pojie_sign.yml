@@ -2,16 +2,12 @@ name: 52pojie_sign_bot
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   workflow_dispatch: # 手动触发
   schedule:
-    - cron: '10 0 * * *'
-      env:
-        TZ: Asia/Shanghai # 设置时区为上海（+8）
-  watch:
-    types: started
+    - cron: "*/15 * * * *" # 每15分钟执行一次
 
 jobs:
   build:
