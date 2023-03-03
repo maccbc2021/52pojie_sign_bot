@@ -1,0 +1,20 @@
+name: Test
+
+on:
+  workflow_dispatch: # 手动触发工作流程
+  push:
+    branches:
+      - main
+
+env:
+  TZ: Asia/Shanghai # 设置时区为上海（+8）
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Print current time
+        run: echo "Current time is $(date)"
