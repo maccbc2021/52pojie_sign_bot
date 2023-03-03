@@ -7,10 +7,13 @@ on:
     branches: [ master ]
   workflow_dispatch: # 手动触发
   schedule:
-      - cron: '0 16 * * *'
+    - cron: '0 0 * * *'
   watch:
     types: started
-  
+
+env:
+  TZ: Asia/Shanghai # 设置时区为上海（+8）
+
 jobs:
   build:
 
