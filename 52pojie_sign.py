@@ -10,10 +10,10 @@ from bs4 import BeautifulSoup
 def get_env_cookie():
     cookie = ""
     if cookie == "":
-        if os.environ.get("52POJIE_COOKIE"):
-            cookie = os.environ.get("52POJIE_COOKIE")
+        if os.environ.get("POJIE52_COOKIE"):
+            cookie = os.environ.get("POJIE52_COOKIE")
         else:
-            print("请配置环境变量52POJIE_COOKIE")
+            print("请配置环境变量POJIE52_COOKIE")
             sys.exit()
     return cookie
 
@@ -72,6 +72,7 @@ def sign():
         print("今日已签到")
     else:
         print("签到失败")
+
 
 if __name__ == '__main__':
     sign()
