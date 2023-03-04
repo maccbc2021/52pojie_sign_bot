@@ -1,34 +1,42 @@
 # -- coding: utf-8 --
 
-import sys
+import re
 import urllib.parse
 import requests
 from pyquery import PyQuery as pq
 
-if __name__ == '__main__':
-    cookie_str = input("请输入cookie：\n")
-    if not cookie_str:
-        print("cookie不能为空")
-        sys.exit()
-    cookies = ''
-    for i in cookie_str.split("; "):
-        key = i.split("=")[0]
-        if "cbCe_9255_sid" in key:
-            cookies += "cbCe_9255_sid=" + urllib.parse.quote(i.split("=")[1]) + "; "
-        if "cbCe_9255_saltkey" in key:
-            cookies += "cbCe_9255_saltkey=" + urllib.parse.quote(i.split("=")[1]) + ";"
-        if "cbCe_9255_auth" in key:
-            cookies += "cbCe_9255_auth=" + urllib.parse.quote(i.split("=")[1]) + ";"
-    headers = {
-        'authority': 'www.iopq.net',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-        'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8',
-        'cache-control': 'max-age=0',
-        'referer': 'https://www.iopq.net/',
-        "Cookie": cookies,
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-    }
-    response = requests.get('https://www.iopq.net/', headers=headers)
+SESSION = requests.Session()
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
+}
+
+BASE_URL = "https://www.iopq.net"
+
+
+def parse_cookie(raw_cookie):
+    pattern = r"(\S+)(_sid|_saltkey|_auth)=(\S+);"
+    matches = re.findall(pattern, raw_cookie)
+    cookies = {}
+    for match in matches:
+        cookies[match[0] + match[1]] = urllib.parse.unquote(match[2])
+    return cookies
+
+
+def sign():
+    response = SESSION.get(BASE_URL, headers=HEADERS)
+    response.raise_for_status()  # 判断请求状态是否正常
     response.encoding = 'gbk'
     doc = pq(response.text)
-    print(doc('.vwmy').text(), doc('#extcreditmenu').text(), doc('#g_upmine').text())
+    print(doc('#extcreditmenu').text(), doc('#g_upmine').text())
+
+
+if __name__ == '__main__':
+    try:
+        input_cookie = input("请输入iopq.net cookie的值：\r\n").strip()
+        input_cookie = urllib.parse.unquote(input_cookie)
+        cookies = parse_cookie(input_cookie)
+        SESSION.cookies.update(cookies)
+        sign()
+    except requests.exceptions.RequestException as e:
+        print(e)

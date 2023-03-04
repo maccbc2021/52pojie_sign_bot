@@ -1,6 +1,7 @@
 # -- coding: utf-8 --
 
 import requests
+import urllib.parse
 import re
 from bs4 import BeautifulSoup
 
@@ -27,7 +28,7 @@ def parse_cookie(raw_cookie):
     matches = re.findall(pattern, raw_cookie)
     cookies = {}
     for match in matches:
-        cookies[match[0] + match[1]] = match[2]
+        cookies[match[0] + match[1]] = urllib.parse.unquote(match[2])
     return cookies
 
 
@@ -43,6 +44,7 @@ def sign(formhash):
 if __name__ == "__main__":
     try:
         input_cookie = input("请输入jiaofs.com cookie的值：\r\n").strip()
+        input_cookie = urllib.parse.unquote(input_cookie)
         cookies = parse_cookie(input_cookie)
         SESSION.cookies.update(cookies)
         formhash = get_formhash()
