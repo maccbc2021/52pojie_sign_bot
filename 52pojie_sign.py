@@ -46,14 +46,13 @@ def parse_cookie(raw_cookie):
     matches = re.findall(pattern, raw_cookie)
     cookies = {}
     for match in matches:
-        cookies[match[0] + match[1]] = urllib.parse.quote(match[2])
+        cookies[match[0] + match[1]] = urllib.parse.quote(match[2], safe='')
     return cookies
 
 
 if __name__ == '__main__':
     try:
         input_cookie = input("请输入52pojie cookie的值：\r\n").strip()
-        input_cookie = urllib.parse.unquote(input_cookie)
         cookies = parse_cookie(input_cookie)
         SESSION.cookies.update(cookies)
         sign()
