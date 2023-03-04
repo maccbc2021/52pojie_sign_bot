@@ -3,9 +3,11 @@
 import requests
 import json
 import sys
+import notify
 
 
 def aliyundrive_sign(refresh_token):
+    message = ""
     update_token_url = "https://auth.aliyundrive.com/v2/account/token"
     signin_url = "https://member.aliyundrive.com/v1/activity/sign_in_list"
 
@@ -32,11 +34,13 @@ def aliyundrive_sign(refresh_token):
         resp = req.post(signin_url, data=data, headers=headers)
         result = json.loads(resp.text)['success']
         if result:
-            print("阿里云盘签到成功!")
+            message += f"阿里云盘签到成功！\n"
         else:
-            print("阿里云盘签到失败!")
+            message += f"阿里云盘签到失败！\n"
     else:
-        print(f"阿里云盘签到失败：{json.loads(resp.text)['message']}")
+        message += f"阿里云盘签到失败：{json.loads(resp.text)['message']}\n"
+    print(message)
+    notify.send("阿里云盘签到", message)
 
 
 if __name__ == '__main__':

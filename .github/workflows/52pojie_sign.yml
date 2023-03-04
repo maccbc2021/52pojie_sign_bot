@@ -24,6 +24,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: 52pojie签到
+      env:
+        PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
       run: |
         cookie='${{ secrets.POJIE52_COOKIE }}'
         python 52pojie_sign.py <<EOF

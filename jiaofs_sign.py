@@ -4,6 +4,7 @@ import requests
 import urllib.parse
 import re
 from bs4 import BeautifulSoup
+import notify
 
 SESSION = requests.Session()
 
@@ -39,6 +40,7 @@ def sign(formhash):
     soup = BeautifulSoup(sign_resp.text, 'xml')
     cdata = soup.find('root').string
     print(cdata)
+    notify.send("jiaofs签到", cdata)
 
 
 if __name__ == "__main__":
