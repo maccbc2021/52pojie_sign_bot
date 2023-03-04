@@ -7,15 +7,15 @@ on:
     branches: [ main ]
   workflow_dispatch: # 手动触发
   schedule:
-    - cron: "*/15 * * * *" # 每15分钟执行一次
+    - cron: "4 16 * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python 3.11
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v3
       with:
         python-version: 3.11
     - name: 安装环境
