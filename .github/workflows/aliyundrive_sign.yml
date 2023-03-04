@@ -24,6 +24,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: 阿里云盘签到
+      env:
+        PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
       run: |
         refresh_token='${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}'
         python aliyundrive_sign.py <<EOF

@@ -4,6 +4,7 @@ import re
 import urllib.parse
 import requests
 from bs4 import BeautifulSoup
+import notify
 
 SESSION = requests.Session()
 
@@ -15,6 +16,7 @@ BASE_URL = "https://www.52pojie.cn"
 
 
 def sign():
+    message = ""
     url1 = f"{BASE_URL}/CSPDREL2hvbWUucGhwP21vZD10YXNrJmRvPWRyYXcmaWQ9Mg==?wzwscspd=MC4wLjAuMA=="
     url2 = f'{BASE_URL}/home.php?mod=task&do=apply&id=2&referer=%2F'
     url3 = f'{BASE_URL}/home.php?mod=task&do=draw&id=2'
@@ -32,13 +34,15 @@ def sign():
     jx_data = r_data.find("div", id="messagetext").find("p").text
 
     if "您需要先登录才能继续本操作" in jx_data:
-        print("Cookie 失效")
+        message = "Cookie 失效"
     elif "恭喜" in jx_data:
-        print("签到成功")
+        message = "签到成功"
     elif "不是进行中的任务" in jx_data:
-        print("今日已签到")
+        message = "今日已签到"
     else:
-        print("签到失败")
+        message = "签到失败"
+    print(message)
+    notify.send("52pojie签到", message)
 
 
 def parse_cookie(raw_cookie):

@@ -4,6 +4,7 @@ import re
 import urllib.parse
 import requests
 from pyquery import PyQuery as pq
+import notify
 
 SESSION = requests.Session()
 
@@ -28,7 +29,9 @@ def sign():
     response.raise_for_status()  # 判断请求状态是否正常
     response.encoding = 'gbk'
     doc = pq(response.text)
-    print(doc('#extcreditmenu').text(), doc('#g_upmine').text())
+    message = doc('#extcreditmenu').text(), doc('#g_upmine').text()
+    print(message)
+    notify.send("iopq签到", message)
 
 
 if __name__ == '__main__':
