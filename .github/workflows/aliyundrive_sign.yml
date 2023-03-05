@@ -1,4 +1,4 @@
-name: 52pojie_sign_bot
+name: aliyundrive_sign_bot
 
 on:
   push:
@@ -23,11 +23,11 @@ jobs:
       run: 
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: 52pojie签到
+    - name: 阿里云盘签到
       env:
         PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
       run: |
-        cookie='${{ secrets.POJIE52_COOKIE }}'
-        python 52pojie_sign.py <<EOF
-        ${cookie}
+        refresh_token='${{ secrets.ALIYUNDRIVE_REFRESH_TOKEN }}'
+        python aliyundrive_sign.py <<EOF
+        ${refresh_token}
         EOF
